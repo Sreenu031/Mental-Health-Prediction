@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organisation Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script>
+     async function checkSession() {
+            try {
+                const response = await fetch('/api/session');
+                const data = await response.json();
+
+                if (data.is_logged_in) {
+                    let redirectUrl = '/dashboard';
+
+                    window.location.href = redirectUrl;
+                }
+            } catch (error) {
+                console.error('Error fetching session data:', error);
+            }
+        }
+
+        // Check session on page load
+        document.addEventListener('Onload', checkSession);
+
+// Handle back button click
+window.addEventListener('popstate', function() {
+    checkSession(); // Check session when back button is clicked
+});
+// Add a new history entry to detect back button click
+history.pushState(null, null, window.location.href);
+
+// Listen for popstate event (triggered when back/forward button is clicked)
+window.addEventListener('popstate', function() {
+    // Force page reload when back button is clicked
+    window.location.reload();
+});
+
+
+    </script>
+</head>
+<body class="bg-gray-100 text-gray-800 relative">
+    <div class="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow-lg mt-8">
+        <!-- Logout Button -->
+        <a href="/logout" class="absolute top-6 right-8 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">Logout</a>
+
+        <h1 class="text-3xl font-bold mb-6 text-blue-600">Organisation Dashboard</h1>
+
+        <div class="mb-6">
+            <a href="/report" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">Report</a>
+        </div>
+        <div class="mb-6">
+            <a href="/student_report" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">Student Report</a>
+        </div>
+
+        <!-- Add Student Form -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-700">Add Student</h2>
+            <form action="{{ url_for('main.add_student') }}" method="POST" class="space-y-4">
+                <div>
+                    <label for="id" class="block text-gray-600">Id:</label>
+                    <input type="number" name="id" id="id" placeholder="Orgid with rollnumber" class="w-full p-2 border rounded-lg" />
+                </div>
+                <div>
+                    <label for="name" class="block text-gray-600">Name:</label>
+                    <input type="text" name="name" id="name" placeholder="Student Name" required class="w-full p-2 border rounded-lg" />
+                </div>
+                <div>
+                    <label for="age" class="block text-gray-600">Age:</label>
+                    <input type="number" name="age" id="age" class="w-full p-2 border rounded-lg" />
+                </div>
+                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition">Add Student</button>
+            </form>
+        </section>
+
+        <!-- List of Students -->
+        <section>
+            <h2 class="text-2xl font-semibold mb-4 text-gray-700">Students</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+                    <thead>
+                        <tr class="bg-gray-200 border-b">
+                            <th class="py-3 px-4 text-left text-gray-600">Student Name</th>
+                            <th class="py-3 px-4 text-left text-gray-600">Update</th>
+                            <th class="py-3 px-4 text-left text-gray-600">Delete</th>
+                            <th class="py-3 px-4 text-left text-gray-600">Test</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in students %}
+                            <tr class="border-b">
+                                <td class="py-3 px-4">
+                                    <a href="{{ url_for('main.record_student', student_id=student[0]) }}" class="text-blue-500 hover:underline">{{ student[1] }}</a>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <form action="{{ url_for('main.update_student', student_id=student[0]) }}" method="POST" class="flex items-center space-x-2">
+                                        <input type="text" name="name" value="{{ student[1] }}" required class="p-2 border rounded-lg flex-grow" />
+                                        <button type="submit" class="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:bg-yellow-600 transition">Update</button>
+                                    </form>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <form action="{{ url_for('main.delete_student', student_id=student[0]) }}" method="POST" class="flex items-center">
+                                        <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition">Delete</button>
+                                    </form>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <a href="{{ url_for('main.test', student_id=student[0]) }}" class="bg-gray-100 text-black px-3 py-1 rounded-lg hover:bg-teal-600 transition">Test</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

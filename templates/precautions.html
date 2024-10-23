@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Precautions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Additional styling if needed */
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-3xl mx-auto text-center">
+        <!-- Heading with red color -->
+        <h1 class="text-3xl font-bold text-red-600 mb-6">Recommended Precautions</h1>
+
+        <!-- Precautions content will be injected here -->
+        <div id="precautions-container" class="text-left space-y-4"></div>
+
+        <!-- Universal precautions for everyone -->
+        <h2 class="text-xl font-semibold text-green-500 mt-8 mb-4">Precautions for Good Mental Health</h2>
+        <ul class="list-decimal ml-6 text-lg text-gray-700 leading-relaxed space-y-4">
+            <li><strong>Be Kind to Yourself:</strong> Practice self-compassion. Don’t be too hard on yourself when things don’t go as planned. Treat yourself with the same kindness and care that you would show to a close friend.</li>
+            <li><strong>Foster a Positive Environment:</strong> Surround yourself with positive, supportive people and create a living environment that promotes relaxation and happiness. Declutter your space and add comforting elements like plants, soft lighting, or soothing colors.</li>
+            <li><strong>Get Regular Physical Exercise:</strong> Physical activity boosts mood, reduces stress, and improves overall mental health. Aim for at least 30 minutes of moderate exercise most days of the week.</li>
+            <li><strong>Practice Mindfulness and Meditation:</strong> Engage in daily mindfulness activities, such as deep breathing exercises, meditation, or yoga. These practices help reduce stress and increase emotional resilience.</li>
+            <li><strong>Stay Informed About Mental Health:</strong> Educate yourself about mental health, including signs of stress, anxiety, and depression. Understanding your emotional state helps you recognize when to seek help or make changes.</li>
+            <li><strong>Ensure Adequate Sleep:</strong> Prioritize getting 7-9 hours of restful sleep each night. Good sleep hygiene is crucial for emotional and cognitive functioning.</li>
+        </ul>
+
+        <!-- Next button -->
+        <div class="mt-6">
+            <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg">
+                <a href="/thankyou" class="no-underline text-white">Next</a>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Get the result variable passed from Flask
+        const result = "{{ result }}";
+
+        // Define the precautions for each condition
+        const precautions = {
+            "Mild": [
+                "Encourage Open Communication",
+                "Promote Positive Routines",
+                "Encourage Social Interaction",
+                "Use Stress-Reduction Techniques: mindfulness, breathing exercises, or art to help manage stress or anxiety",
+                "Limit Screen Time: Encourage breaks from devices to reduce overstimulation and anxiety, replacing it with more engaging or physical activities."
+            ],
+            "Moderate": [
+                "Seek Professional Guidance: Schedule an appointment with a child psychologist, counselor, or pediatrician for further evaluation and guidance.",
+                "Engage in Therapy: Cognitive Behavioral Therapy (CBT) or play therapy may be recommended by professionals.",
+                "Regular Follow-ups with healthcare providers to monitor progress and adjust care plans.",
+                "School Involvement: Engage teachers or counselors for support.",
+                "Encourage Hobbies: Promote activities that enhance self-esteem and reduce stress, like art, music, or sports."
+            ],
+            "Serious": [
+                "Immediate Professional Consultation: Contact a mental health professional for comprehensive evaluation.",
+                "Therapeutic Intervention: Seek therapy for emotional and behavioral issues.",
+                "Build Self-Esteem: Celebrate small achievements through positive reinforcement.",
+                "Stay Informed: Learn about the condition to provide informed support."
+            ]
+        };
+
+        // Get the container where precautions will be displayed
+        const precautionsContainer = document.getElementById('precautions-container');
+
+        // Display the precautions based on the result
+        if (precautions[result]) {
+            // Create a numbered list for precautions
+            const precautionsList = precautions[result].map((item, index) =>
+                `<div class="precaution text-lg text-gray-700 leading-relaxed">
+                    <strong>${index + 1}.</strong> ${item}
+                </div>`
+            ).join("");
+
+            precautionsContainer.innerHTML = `<h2 class="text-xl font-semibold text-green-500">Precautions for your Condition:</h2><div class="list-none">${precautionsList}</div>`;
+        } else {
+            precautionsContainer.innerHTML = `<h2 class="text-xl font-semibold text-red-500">Unknown condition</h2>`;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+
+    <!-- Top right buttons: Profile and Logout -->
+    <div class="flex justify-end p-4">
+        <button class="px-4 py-2 bg-blue-500 text-white rounded-lg mr-4 hover:bg-blue-600">Profile</button>
+        <button class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"><a href="/logout"> Logout</a></button>
+    </div>
+
+    <div class="p-6">
+        <h1 class="text-2xl font-bold mb-4">Doctor Dashboard</h1>
+
+        <!-- Organizations List -->
+        <h2 class="text-xl font-semibold mb-4">Organizations</h2>
+        <div class="bg-white shadow-md rounded-lg p-4">
+            <table class="w-full table-auto">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2 text-left">Organization Id</th>
+                        <th class="px-4 py-2 text-left">Organization Name</th>
+                        <th class="px-4 py-2 text-left">Contact Number</th>
+                        <th class="px-4 py-2 text-left">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for org in organizations %}
+                    <tr class="border-b">
+                        <td class="px-4 py-2">{{ org.organization_id }}</td>
+                        <td class="px-4 py-2">{{ org.name }}</td>
+                        <td class="px-4 py-2">{{ org.contact_num }}</td>
+                        <td class="px-4 py-2">
+                            <a href="{{ url_for('main.view_students', org_id=org.organization_id) }}" class="text-blue-500 hover:underline">View Students</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>

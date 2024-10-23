@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Report</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
+        <h1 class="text-2xl font-bold mb-4">Student Report</h1>
+
+        {% for student, records in reports_by_student.items() %}
+            <div class="mb-6">
+                <h2 class="text-xl font-semibold mb-2">{{ student }}</h2>
+                <ul class="list-disc list-inside">
+                    {% for record in records %}
+                        <li class="mb-2">
+                            <span class="font-medium">Result:</span> {{ record.result }} |
+                            <span class="font-medium">Score:</span> {{ record.score }} |
+                            <span class="font-medium">Date:</span> {{ record.date }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctors List</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="bg-gray-100 p-6">
+    <h1 class="text-3xl font-bold mb-6">Doctors List</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% if doctors %}
+            {% for doctor in doctors %}
+            <div class="bg-white rounded-lg shadow-md p-6 flex flex-col">
+                <!-- Doctor Image -->
+                <img src="../static/images/doctor.jpeg" alt="{{ doctor.business_name }}'s image" class="w-32 h-32 rounded-full mb-4 object-cover mx-auto">
+
+                <!-- Centered Doctor Name -->
+                <h2 class="text-2xl font-bold text-center mb-2">{{ doctor.business_name }}</h2>
+                <p class="text-gray-700 font-medium mb-2">Area of Expertise: {{ doctor.business_category }}</p>
+
+                <!-- Left-aligned details -->
+                <p class="mt-2 text-gray-600 font-medium">Address: {{ doctor.address }}</p>
+                <p class="text-gray-600 font-small">Phone: {{ doctor.phone }}</p>
+
+                <!-- Rating with stars -->
+                <div class="flex items-center mt-2 bg-gray-100 rounded-lg px-2 py-1">
+                    <span class="text-yellow-500">
+                        <i class="fas fa-star"></i>
+                    </span>
+                    <span class="ml-2 text-gray-600 font-light">({{ doctor.rating }})</span>
+                </div>
+
+                <!-- Website Button -->
+                <a href="{{ doctor.url }}" class="bg-blue-500 text-white text-center py-2 rounded-md mt-4 inline-block">Consult Doctor</a>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-gray-600 font-light">No need to consult doctors; just follow the precautions.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

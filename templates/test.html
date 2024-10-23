@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Questionnaire Test</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #4f46e5;
+            font-size: 1.75rem;
+            font-weight: 600;
+        }
+
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .question {
+            margin: 20px 0;
+        }
+
+        .question p {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .options {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        label {
+            background-color: #e5e7eb;
+            border-radius: 5px;
+            padding: 10px;
+            flex: 1 1 calc(33.33% - 10px);
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        label:hover {
+            background-color: #d1d5db;
+        }
+
+        input[type="radio"] {
+            display: none;
+        }
+
+        input[type="radio"]:checked + label {
+            background-color: #4f46e5;
+            color: white;
+        }
+
+        .submit-btn {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .submit-btn button {
+            background-color: #4f46e5;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-btn button:hover {
+            background-color: #4338ca;
+        }
+
+        @media (max-width: 768px) {
+            label {
+                flex: 1 1 calc(50% - 10px);
+                padding: 8px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            label {
+                flex: 1 1 100%;
+                padding: 10px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1>Questionnaire Test</h1>
+
+<div class="form-container">
+    <form id="questionnaireForm" method="POST" action="/predict/{{ student_id }}">
+        <!-- Questions will be dynamically inserted here -->
+        <div class="submit-btn">
+            <button type="submit" id="submitBtn">Submit</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    // Array of question objects
+    const questions = [
+        { id: 1, text: "Complains of aches and pains" },
+        { id: 2, text: "Spends more time alone" },
+        { id: 3, text: "Tires easily, has little energy" },
+        { id: 4, text: "Fidgety, unable to sit still" },
+        { id: 5, text: "Has trouble with teacher" },
+        { id: 6, text: "Less interested in school" },
+        { id: 7, text: "Acts as if driven by a motor" },
+        { id: 8, text: "Daydreams too much" },
+        { id: 9, text: "Distracted easily" },
+        { id: 10, text: "Is afraid of new situations" },
+        { id: 11, text: "Feels sad, unhappy" },
+        { id: 12, text: "Is irritable, angry" },
+        { id: 13, text: "Feels hopeless" },
+        { id: 14, text: "Has trouble concentrating" },
+        { id: 15, text: "Less interested in friends" },
+        { id: 16, text: "Fights with other children" },
+        { id: 17, text: "Absent from school" },
+        { id: 18, text: "Disruptive in class" },
+        { id: 19, text: "Withdrawn, anxious" },
+        { id: 20, text: "Is moody, unhappy" },
+        { id: 21, text: "Tends to overreact" },
+        { id: 22, text: "Shows less interest in activities" },
+        { id: 23, text: "Has difficulty making friends" },
+        { id: 24, text: "Appears withdrawn" },
+        { id: 25, text: "Shows excessive worry" },
+        { id: 26, text: "Has trouble sleeping" },
+        { id: 27, text: "Appears tired during the day" },
+        { id: 28, text: "Avoids social situations" },
+        { id: 29, text: "Has difficulty with focus" },
+        { id: 30, text: "Displays mood swings" },
+        { id: 31, text: "Has difficulty following instructions" },
+        { id: 32, text: "Shows a lack of interest in school" },
+        { id: 33, text: "Is overly critical of self" },
+        { id: 34, text: "Is often anxious" },
+        { id: 35, text: "Shows signs of depression" }
+    ];
+
+    // Generate form elements dynamically
+    const form = document.getElementById('questionnaireForm');
+    questions.forEach(question => {
+        const questionDiv = document.createElement('div');
+        questionDiv.classList.add('question');
+        questionDiv.innerHTML = `
+            <p>${question.text}:</p>
+            <div class="options">
+                <input type="radio" id="q${question.id}_never" name="q${question.id}" value="0">
+                <label for="q${question.id}_never">Never</label>
+
+                <input type="radio" id="q${question.id}_sometimes" name="q${question.id}" value="1">
+                <label for="q${question.id}_sometimes">Sometimes</label>
+
+                <input type="radio" id="q${question.id}_often" name="q${question.id}" value="2">
+                <label for="q${question.id}_often">Often</label>
+            </div>
+        `;
+        form.insertBefore(questionDiv, form.querySelector('.submit-btn'));
+    });
+
+    // Form validation before submitting
+    form.addEventListener('submit', function(event) {
+        let allAnswered = true;
+
+        // Loop through each question and check if an option is selected
+        questions.forEach(question => {
+            const options = document.getElementsByName(`q${question.id}`);
+            let isAnswered = Array.from(options).some(option => option.checked);
+            if (!isAnswered) {
+                allAnswered = false;
+            }
+        });
+
+        // If not all questions are answered, show alert and prevent form submission
+        if (!allAnswered) {
+            event.preventDefault();
+            alert('Please answer all questions before submitting.');
+        }
+    });
+</script>
+
+</body>
+</html>
